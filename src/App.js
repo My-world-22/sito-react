@@ -1,25 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css'
+import './App.css'
+import MyNav from './components/MyNav'
+import MyFooter from './components/MyFooter'
+import Welcome from './components/Welcome'
+import AllTheBooks from './components/AllTheBooks'
+import { Container } from 'react-bootstrap'
+import { useState } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import NotFound from './components/NotFound'
+import BookDetails from './components/BookDetails'
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState('')
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <BrowserRouter>
+      <MyNav searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Container>
+        <Welcome />
+        <Routes>
+          <Route path="/" element={<AllTheBooks searchQuery={searchQuery} />} />
+          <Route path="/details/:asin" element={<BookDetails />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Container>
+      <MyFooter />
+    </BrowserRouter>
+  )
 }
 
-export default App;
+export default App
